@@ -1,0 +1,39 @@
+{
+  "env": {
+    "defaultIncludePath": [
+      "${workspaceFolder}/funkin/include/**",
+      "${workspaceFolder}/engine/include/**"
+    ],
+    "defaultDefines": [],
+    
+    /* Wii/Gamecube paths and info */
+    "rvlIncludePaths": [
+      "${env:DEVKITPRO}/portlibs/ppc/include/**",
+      "${env:DEVKITPRO}/portlibs/wii/include/**",
+      "${env:DEVKITPRO}/libogc/include/**",
+    ],
+    "rvlDefines": ["HW_RVL"],
+    
+    "dolIncludePaths": [
+      "${env:DEVKITPRO}/portlibs/ppc/include/**",
+      "${env:DEVKITPRO}/portlibs/gamecube/include/**",
+      "${env:DEVKITPRO}/libogc/include/**",
+    ],
+    "dolDefines": ["HW_DOL"],
+    
+    "ppcCompilerPath": "${env:DEVKITPRO}/devkitPPC/bin/powerpc-eabi-g++"
+  },
+
+  "configurations": [
+    {
+      "name": "Wii",
+      "includePath": ["${env:defaultIncludePath}", "${env:rvlIncludePaths}"],
+      "defines": ["${env:defaultDefines}", "${env:rvlDefines}"],
+      "compilerPath": "${env:ppcCompilerPath}",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-arm"
+    }
+  ],
+  "version": 4
+}

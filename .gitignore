@@ -1,0 +1,6 @@
+# Ignore build output
+/build
+/out
+
+# Ignore macOS files
+.DS_Store
