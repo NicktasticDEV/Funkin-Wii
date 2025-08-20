@@ -1,78 +1,40 @@
-#include <stdio.h>
+#include <grrlib.h>
 #include <stdlib.h>
 #include <gccore.h>
+#include <stdio.h>
 #include <wiiuse/wpad.h>
-#include "engine.h"
+#include <fat.h>
+#include <tinyxml2.h>
 
-static void *xfb = NULL;
-static GXRModeObj *rmode = NULL;
+using namespace tinyxml2;
 
-//---------------------------------------------------------------------------------
 int main(int argc, char **argv) {
-//---------------------------------------------------------------------------------
+    WPAD_Init();
+    fatInitDefault();
+    SYS_STDIO_Report(true);
 
-	// Initialise the video system
-	VIDEO_Init();
+    GRRLIB_Init();
 
-	// This function initialises the attached controllers
-	WPAD_Init();
+    // XML
+    XMLDocument doc;
+    doc.LoadFile("sd:/fnfwii/images/characters/boyfriend/boyfriend_main.xml");
 
-	// Obtain the preferred video mode from the system
-	// This will correspond to the settings in the Wii menu
-	rmode = VIDEO_GetPreferredMode(NULL);
+    // Image
+    GRRLIB_texImg *tex_test = GRRLIB_LoadTextureFromFile("sd:/fnfwii/images/characters/boyfriend/boyfriend_main.png");
 
-	// Allocate memory for the display in the uncached region
-	xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
+    // Loop
+    while(1) {
 
-	// Initialise the console, required for printf
-	console_init(xfb,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
-	//SYS_STDIO_Report(true);
+        WPAD_ScanPads();
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME)  break;
+        GRRLIB_FillScreen(0xBABABAFF);
 
-	// Set up the video registers with the chosen mode
-	VIDEO_Configure(rmode);
+        GRRLIB_DrawPart(0,0, 1, 1, 254, 257, tex_test, 0, 1, 1, 0xFFFFFFFF);
 
-	// Tell the video hardware where our display memory is
-	VIDEO_SetNextFramebuffer(xfb);
+        GRRLIB_Render();
+    }
 
-	// Make the display visible
-	VIDEO_SetBlack(false);
-
-	// Flush the video register changes to the hardware
-	VIDEO_Flush();
-
-	// Wait for Video setup to complete
-	VIDEO_WaitVSync();
-	if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
-
-
-	// The console understands VT terminal escape codes
-	// This positions the cursor on row 2, column 0
-	// we can use variables for this with format codes too
-	// e.g. printf ("\x1b[%d;%dH", row, column );
-	printf("\x1b[2;0H");
-
-
-	printf("Hello World!\n");
-
-	engine_init();
-
-	while(1) {
-
-		// Call WPAD_ScanPads each loop, this reads the latest controller states
-		WPAD_ScanPads();
-
-		// WPAD_ButtonsDown tells us which buttons were pressed in this loop
-		// this is a "one shot" state which will not fire again until the button has been released
-		u32 pressed = WPAD_ButtonsDown(0);
-
-		// We return to the launcher application via exit
-		if ( pressed & WPAD_BUTTON_HOME ) exit(0);
-
-		engine_update();
-
-		// Wait for the next frame
-		VIDEO_WaitVSync();
-	}
-
-	return 0;
+    GRRLIB_FreeTexture(tex_test);
+    GRRLIB_Exit();
+    exit(0);
 }

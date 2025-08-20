@@ -20,12 +20,12 @@ BUILD		:=	build
 OUTDIR		:=	out
 
 SOURCES		:=	funkin/source \
-				engine/source
+				finengine/source
 
 DATA		:=	data
 
 INCLUDES	:=	funkin/include \
-				engine/include
+				finengine/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -39,13 +39,16 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lwiiuse -lbte -logc -lm
+LIBS	:= -lgrrlib -lpngu `$(PREFIX)pkg-config freetype2 libpng libjpeg --libs` -lfat
+LIBS	+= -lwiiuse -ltinyxml2
+LIBS	+= -lasnd -lvorbisidec -logg -lm
+LIBS	+= -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:=
+LIBDIRS	+= $(PORTLIBS) $(LIBOGC_LIB)
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -133,6 +136,14 @@ $(OFILES_SOURCES) : $(HFILES)
 # This rule links in binary data with the .jpg extension
 #---------------------------------------------------------------------------------
 %.jpg.o	%_jpg.h :	%.jpg
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	$(bin2o)
+
+#---------------------------------------------------------------------------------
+# This rule links in binary data with the .png extension
+#---------------------------------------------------------------------------------
+%.png.o	:	%.png
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	$(bin2o)
