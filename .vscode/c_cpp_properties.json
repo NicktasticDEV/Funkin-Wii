@@ -10,14 +10,14 @@
     "rvlIncludePaths": [
       "${env:DEVKITPRO}/portlibs/ppc/include/**",
       "${env:DEVKITPRO}/portlibs/wii/include/**",
-      "${env:DEVKITPRO}/libogc/include/**",
+      "${env:DEVKITPRO}/libogc/include/**"
     ],
     "rvlDefines": ["HW_RVL"],
     
     "dolIncludePaths": [
       "${env:DEVKITPRO}/portlibs/ppc/include/**",
       "${env:DEVKITPRO}/portlibs/gamecube/include/**",
-      "${env:DEVKITPRO}/libogc/include/**",
+      "${env:DEVKITPRO}/libogc/include/**"
     ],
     "dolDefines": ["HW_DOL"],
     

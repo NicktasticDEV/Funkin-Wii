@@ -4,6 +4,15 @@
         "*.hxc": "haxe",
         "*.json": "jsonc",
         "gccore.h": "c",
-        "wpad.h": "c"
+        "wpad.h": "c",
+        "vector": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "span": "cpp",
+        "string": "cpp",
+        "format": "cpp",
+        "text_encoding": "cpp",
+        "typeinfo": "cpp"
     }
 }
