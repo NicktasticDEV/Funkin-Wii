@@ -20,6 +20,7 @@ BUILD		:=	build
 OUTDIR		:=	out
 
 SOURCES		:=	funkin/source \
+				funkin/source/states \
 				engine/source
 
 DATA		:=	data

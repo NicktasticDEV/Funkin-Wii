@@ -1,6 +1,4 @@
 #include "FinEngine.h"
-#include <grrlib.h>
-#include <wiiuse/wpad.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,14 +11,21 @@ namespace finengine {
             s_instance = this;
         }
 
-        // Initialize systems
-        GRRLIB_Init();
-        WPAD_Init();
-
-        // Initialize state
+        // State initialization
         currentState->init();
 
-        
+        // State update
+        while (isRunning) {
+            currentState->update();
+            currentState->render();
+        }
+
+        // Cleanup
+        currentState->cleanup();
+    }
+
+    void FinGame::exit() {
+        isRunning = false;
     }
 
     FinGame::~FinGame() {

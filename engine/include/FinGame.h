@@ -16,6 +16,7 @@ namespace finengine {
         private:
             static FinGame* s_instance;
             FinState* currentState = nullptr;
+            bool isRunning = true;
     };
 
 }

@@ -2,7 +2,7 @@
   "env": {
     "defaultIncludePath": [
       "${workspaceFolder}/funkin/include/**",
-      "${workspaceFolder}/finengine/include/**"
+      "${workspaceFolder}/engine/include/**"
     ],
     "defaultDefines": [],
     
