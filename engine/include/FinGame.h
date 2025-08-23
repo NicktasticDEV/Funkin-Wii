@@ -3,9 +3,6 @@
 
 namespace finengine {
 
-    // Forward declaration to avoid circular dependency issues
-    class FinState;
-
     class FinGame {
         public:
             FinGame(FinState *initialState);

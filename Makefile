@@ -20,12 +20,12 @@ BUILD		:=	build
 OUTDIR		:=	out
 
 SOURCES		:=	funkin/source \
-				finengine/source
+				engine/source
 
 DATA		:=	data
 
 INCLUDES	:=	funkin/include \
-				finengine/include
+				engine/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -41,7 +41,6 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 LIBS	:= -lgrrlib -lpngu `$(PREFIX)pkg-config freetype2 libpng libjpeg --libs` -lfat
 LIBS	+= -lwiiuse -ltinyxml2
-LIBS	+= -lasnd -lvorbisidec -logg -lm
 LIBS	+= -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
@@ -120,6 +119,10 @@ run:
 	open -a Dolphin $(OUTDIR)/$(TARGET).dol
 
 #---------------------------------------------------------------------------------
+wiiload:
+	open -a Dolphin $(OUTDIR)/$(TARGET).dol
+
+
 else
 
 DEPENDS	:=	$(OFILES:.o=.d)
