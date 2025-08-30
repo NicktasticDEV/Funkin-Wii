@@ -3,7 +3,7 @@
 </div>
 
 <h1> Welcome! </h1>
-<p>This is a rewrite of Friday Night Funkin' made to run on the Nintendo Wii!</p>
+<p>This is a rewrite of <a href="https://github.com/FunkinCrew/Funkin">Friday Night Funkin'</a> made to run on the Nintendo Wii!</p>
 <p>This project is fairly new, so like, don't expect much right now.</p>
 
 <h1>How to compile</h1>
