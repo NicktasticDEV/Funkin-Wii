@@ -5,5 +5,5 @@
 #define FINENGINE_VERSION_PATCH 0
 
 // Headers
-#include "FinGame.h"
-#include "FinState.h"
+#include "finengine/FinGame.h"
+#include "finengine/FinState.h"

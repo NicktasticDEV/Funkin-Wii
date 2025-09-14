@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "system/system.h"
+
 namespace finengine {
     FinGame* FinGame::s_instance = nullptr;
 
@@ -10,6 +12,9 @@ namespace finengine {
         if (!s_instance) {
             s_instance = this;
         }
+
+        // Initialize system
+        System_Init();
 
         // State initialization
         currentState->init();
@@ -22,6 +27,9 @@ namespace finengine {
 
         // Cleanup
         currentState->cleanup();
+
+        // Shutdown system
+        System_Shutdown();
     }
 
     void FinGame::exit() {

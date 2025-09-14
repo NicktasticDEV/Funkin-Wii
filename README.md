@@ -13,12 +13,10 @@
 <ul>
     <li><a href="https://github.com/GRRLIB/GRRLIB">GRRLIB</a></li>
     <li><a href="https://github.com/leethomason/tinyxml2">Tinyxml2</a></li>
+    <li><a href="https://github.com/NateXS/libromfs-ogc">libromfs-ogc</a></li>
 </ul>
 
 <p> To install Tinyxml2, you can use the following command:</p>
 <pre>
 sudo dkp-pacman -S ppc-tinyxml2     
 </pre>
-
-<h1>How to test</h1>
-<p>Before you start testing with dolphin emulator, you will need to set the SD card path to the sd folder.</p>

@@ -21,21 +21,38 @@ OUTDIR		:=	out
 
 SOURCES		:=	funkin/source \
 				funkin/source/states \
-				engine/source
-
-DATA		:=	data
+				\
+				engine/source \
+				engine/source/engine \
+				engine/source/system
 
 INCLUDES	:=	funkin/include \
-				engine/include
+				\
+				engine/include \
+				engine/include/finengine \
+				engine/source/
+
+
+DATA		:=	data
+ROMFS		:=	assets
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
 CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE)
+
+# Define FINENGINE stuff for Wii
+CFLAGS  += -DFINENGINE_OS_WII
+
 CXXFLAGS	=	$(CFLAGS)
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+
+# libromfs
+include $(DEVKITPRO)/portlibs/wii/share/romfs-ogc.mk
+CFLAGS		+=	$(ROMFS_CFLAGS)
+CXXFLAGS	+=	$(ROMFS_CFLAGS)
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -44,6 +61,9 @@ LIBS	:= -lgrrlib -lpngu `$(PREFIX)pkg-config freetype2 libpng libjpeg --libs` -l
 LIBS	+= -lwiiuse -ltinyxml2 -lasnd
 LIBS	+= -lvorbisidec -logg
 LIBS	+= -lbte -logc -lm
+
+# Ensure romfs library flags are included in final link (romfsInit/romfsExit)
+LIBS	+= $(ROMFS_LIBS)
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -85,7 +105,7 @@ endif
 
 export OFILES_BIN	:=	$(addsuffix .o,$(BINFILES))
 export OFILES_SOURCES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(sFILES:.s=.o) $(SFILES:.S=.o)
-export OFILES := $(OFILES_BIN) $(OFILES_SOURCES)
+export OFILES := $(OFILES_BIN) $(OFILES_SOURCES) $(ROMFS_TARGET)
 
 export HFILES := $(addsuffix .h,$(subst .,_,$(BINFILES)))
 
@@ -108,7 +128,7 @@ export LIBPATHS	:= -L$(LIBOGC_LIB) $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@[ -d $(OUTDIR) ] || mkdir -p $(OUTDIR)
-	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile TOPDIR=$(CURDIR)
 
 #---------------------------------------------------------------------------------
 clean:

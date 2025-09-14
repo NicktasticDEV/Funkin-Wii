@@ -2,7 +2,10 @@
   "env": {
     "defaultIncludePath": [
       "${workspaceFolder}/funkin/include/**",
-      "${workspaceFolder}/engine/include/**"
+      "${workspaceFolder}/engine/include/**",
+      "${workspaceFolder}/engine/include/finengine/**",
+      "${workspaceFolder}/engine/source/**"
+
     ],
     "defaultDefines": [],
     
@@ -12,7 +15,7 @@
       "${env:DEVKITPRO}/portlibs/wii/include/**",
       "${env:DEVKITPRO}/libogc/include/**"
     ],
-    "rvlDefines": ["HW_RVL"],
+    "rvlDefines": ["HW_RVL", "FINENGINE_OS_WII"],
     
     "dolIncludePaths": [
       "${env:DEVKITPRO}/portlibs/ppc/include/**",
