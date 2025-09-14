@@ -1,0 +1,30 @@
+# Install grrlib
+FROM devkitpro/devkitppc:latest AS libgrrlib_builder
+WORKDIR /libgrrlib
+
+RUN git clone https://github.com/GRRLIB/GRRLIB.git . 
+RUN dkp-pacman --sync --needed --noconfirm libfat-ogc ppc-libpng ppc-freetype ppc-libjpeg-turbo
+RUN make -C GRRLIB clean all install
+
+# Install libromfs
+FROM devkitpro/devkitppc:latest AS libromfs_builder
+WORKDIR /libromfs
+
+RUN git clone https://github.com/NateXS/libromfs-ogc.git . 
+RUN make PLATFORM=wii
+RUN make install
+
+# Main build stage
+FROM devkitpro/devkitppc:latest AS main_builder
+WORKDIR /app
+
+COPY --from=libromfs_builder /opt/devkitpro/portlibs/ /opt/devkitpro/portlibs/
+COPY --from=libgrrlib_builder /opt/devkitpro/portlibs/ /opt/devkitpro/portlibs/
+RUN dkp-pacman --sync --needed --noconfirm ppc-tinyxml2
+COPY . .
+
+RUN make build package
+
+
+FROM scratch AS exporter
+COPY --from=main_builder /app/out/ /out/

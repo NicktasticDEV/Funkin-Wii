@@ -4,9 +4,18 @@
 
 <h1> Welcome! </h1>
 <p>This is a rewrite of <a href="https://github.com/FunkinCrew/Funkin">Friday Night Funkin'</a> made to run on the Nintendo Wii!</p>
-<p>This project is fairly new, so like, don't expect much right now.</p>
 
 <h1>How to compile</h1>
+
+<h3><p>The Docker way (Recommended)</p></h3>
+<p>To compile the project using Docker, you can use the provided Dockerfile.wii to build a Docker image with all the necessary dependencies.</p>
+<pre>
+docker build -f docker/Dockerfile.wii --target exporter -o . .
+</pre>
+
+<hr>
+
+<h3><p>The Manual Way</p></h3>
 <p>Make sure you have <a href="https://www.devkitpro.org/">devkitPro</a> installed.</p>
 
 <p>You will need to install the following libraries</p>

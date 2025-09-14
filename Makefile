@@ -10,12 +10,24 @@ endif
 include $(DEVKITPPC)/wii_rules
 
 #---------------------------------------------------------------------------------
+# App Info
+#---------------------------------------------------------------------------------
+APP_TITLE	:=	Friday Night Funkin'
+APP_AUTHOR	:=	NicktasticToons
+APP_SHORT_DESC	:=	Short Description
+APP_LONG_DESC	:=	Long Description
+APP_VERSION	:=	0.0.0
+
+#---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
+# OUTDIR is the directory where the final output will be placed
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
+# DATA is a list of directories containing data files to be converted to binary and embedded
+# ROMFS is a list of directories containing data files to be placed in a romfs
 #---------------------------------------------------------------------------------
-TARGET		:=	$(notdir $(CURDIR))
+TARGET		:=	funkin
 BUILD		:=	build
 OUTDIR		:=	out
 
@@ -32,7 +44,6 @@ INCLUDES	:=	funkin/include \
 				engine/include/finengine \
 				engine/source/
 
-
 DATA		:=	data
 ROMFS		:=	assets
 
@@ -42,7 +53,7 @@ ROMFS		:=	assets
 
 CFLAGS	= -g -O2 -Wall $(MACHDEP) $(INCLUDE)
 
-# Define FINENGINE stuff for Wii
+# == WII SPECIFIC DEFINES ==
 CFLAGS  += -DFINENGINE_OS_WII
 
 CXXFLAGS	=	$(CFLAGS)
@@ -122,7 +133,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -iquote $(CURDIR)/$(dir)) \
 #---------------------------------------------------------------------------------
 export LIBPATHS	:= -L$(LIBOGC_LIB) $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) clean
+.PHONY: $(BUILD) clean run package
 
 #---------------------------------------------------------------------------------
 $(BUILD):
@@ -141,9 +152,26 @@ run:
 	open -a Dolphin $(OUTDIR)/$(TARGET).dol
 
 #---------------------------------------------------------------------------------
-wiiload:
-	open -a Dolphin $(OUTDIR)/$(TARGET).dol
+package: build
+	@echo Packaging...
+	@rm -rf package
+	@mkdir -p package/apps/$(TARGET)
+	@cp $(OUTDIR)/$(TARGET).dol package/apps/$(TARGET)/boot.dol
 
+	@echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" > package/apps/$(TARGET)/meta.xml
+	@echo "<app version=\"$(APP_VERSION)\">" >> package/apps/$(TARGET)/meta.xml
+	@echo "	<name>$(APP_TITLE)</name>" >> package/apps/$(TARGET)/meta.xml
+	@echo "	<coder>$(APP_AUTHOR)</coder>" >> package/apps/$(TARGET)/meta.xml
+	@echo "	<version>$(APP_VERSION)</version>" >> package/apps/$(TARGET)/meta.xml
+	@echo "	<!-- <release_date>$(RELEASE_DATE)</release_date> -->" >> package/apps/$(TARGET)/meta.xml
+	@echo "	<short_description>$(APP_SHORT_DESC)</short_description>" >> package/apps/$(TARGET)/meta.xml
+	@echo "	<long_description>$(APP_LONG_DESC)</long_description>" >> package/apps/$(TARGET)/meta.xml
+	@echo "</app>" >> package/apps/$(TARGET)/meta.xml
+
+	@if [ -f gfx/wii/icon.png ]; then cp gfx/wii/icon.png package/apps/$(TARGET)/icon.png; fi
+	@cd package && zip -r ../$(OUTDIR)/$(TARGET).zip apps/
+	@rm -rf package
+	@echo Package created: $(OUTDIR)/$(TARGET).zip
 
 else
 
