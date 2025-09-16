@@ -13,7 +13,7 @@ namespace finengine {
             s_instance = this;
         }
 
-        // Initialize system
+        // Initialize systems
         System_Init();
 
         // State initialization
@@ -27,8 +27,6 @@ namespace finengine {
 
         // Cleanup
         currentState->cleanup();
-
-        // Shutdown system
         System_Shutdown();
     }
 
