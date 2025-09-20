@@ -6,16 +6,6 @@
 #include <math.h>
 #include <stdio.h>
 
-namespace
-{
-    GRRLIB_texImg *logo;
-    GRRLIB_texImg *bg;
-
-    int frameCount = 0;
-    float logoY;
-    float logoYDelay;
-}
-
 void TitleState::init() {
     romfsInit();
     WPAD_Init();
