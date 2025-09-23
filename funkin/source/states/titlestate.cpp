@@ -1,15 +1,16 @@
 #include "titlestate.h"
 
+#include "FinEngine.h"
 #include <grrlib.h>
 #include <romfs-ogc.h>
+
 #include <wiiuse/wpad.h>
 #include <math.h>
 #include <stdio.h>
 
-void TitleState::init() {
-    romfsInit();
-    WPAD_Init();
+#include "teststate.h"
 
+void TitleState::init() {
     logo = GRRLIB_LoadTextureFromFile("romfs:/images/logo.png");
     bg = GRRLIB_LoadTextureFromFile("romfs:/images/titlebg.png");
 }
@@ -20,7 +21,13 @@ void TitleState::update() {
     // Exit code
     if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME)
     {
-        finengine::FinGame::instance().exit();
+        finengine::FinGame::instance().Exit();
+    }
+
+    if (WPAD_ButtonsDown(0) & WPAD_BUTTON_A)
+    {
+        printf("Switching to Test State\n");
+        finengine::FinGame::instance().SwitchState(new TestState());
     }
 
     // Logo Y position update
@@ -45,5 +52,4 @@ void TitleState::render() {
 void TitleState::cleanup() {
     GRRLIB_FreeTexture(logo);
     GRRLIB_FreeTexture(bg);
-    romfsExit();
 }

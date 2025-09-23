@@ -10,12 +10,13 @@ namespace finengine {
 
             static FinGame& instance() { return *s_instance; }
             static FinGame* instancePtr() { return s_instance; }
-            void setState(FinState* state);
-            void exit();
+            void SwitchState(FinState* state);
+            void Exit();
 
         private:
             static FinGame* s_instance;
             FinState* currentState = nullptr;
+            FinState* nextState = nullptr;
             bool isRunning = true;
     };
 
