@@ -23,7 +23,7 @@ COPY --from=libgrrlib_builder /opt/devkitpro/portlibs/ /opt/devkitpro/portlibs/
 RUN dkp-pacman --sync --needed --noconfirm ppc-tinyxml2
 COPY . .
 
-RUN make build package
+RUN make all package
 
 
 FROM scratch AS exporter

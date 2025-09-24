@@ -29,3 +29,9 @@ docker build -f docker/Dockerfile.wii --target exporter -o . .
 <pre>
 sudo dkp-pacman -S ppc-tinyxml2     
 </pre>
+
+<p>Then, you can run the following commands to compile the project:</p>
+<pre>
+make all
+</pre>
+<p>This will generate a .dol file in the build/ folder of <strong>funkin</strong>.</p>
