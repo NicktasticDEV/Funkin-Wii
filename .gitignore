@@ -5,3 +5,4 @@ app.romfs.o
 
 # Ignore macOS files
 .DS_Store
+/.vscode

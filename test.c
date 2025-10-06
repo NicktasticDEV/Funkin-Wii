@@ -1,75 +1,37 @@
-#include <stdio.h>
+/*===========================================
+        GRRLIB (GX Version)
+        - Template Code -
+
+        Minimum Code To Use GRRLIB
+============================================*/
+#include <grrlib.h>
+
 #include <stdlib.h>
-#include <gccore.h>
 #include <wiiuse/wpad.h>
 
-static void *xfb = NULL;
-static GXRModeObj *rmode = NULL;
-
-//---------------------------------------------------------------------------------
 int main(int argc, char **argv) {
-//---------------------------------------------------------------------------------
+    // Initialise the Graphics & Video subsystem
+    GRRLIB_Init();
 
-	// Initialise the video system
-	VIDEO_Init();
+    // Initialise the Wiimotes
+    WPAD_Init();
 
-	// This function initialises the attached controllers
-	WPAD_Init();
+    // Loop forever
+    while(1) {
 
-	// Obtain the preferred video mode from the system
-	// This will correspond to the settings in the Wii menu
-	rmode = VIDEO_GetPreferredMode(NULL);
+        WPAD_ScanPads();  // Scan the Wiimotes
 
-	// Allocate memory for the display in the uncached region
-	xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
+        // If [HOME] was pressed on the first Wiimote, break out of the loop
+        if (WPAD_ButtonsDown(0) & WPAD_BUTTON_HOME)  break;
 
-	// Initialise the console, required for printf
-	console_init(xfb,20,20,rmode->fbWidth-20,rmode->xfbHeight-20,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+        // ---------------------------------------------------------------------
+        // Place your drawing code here
+        // ---------------------------------------------------------------------
 
-	// Set up the video registers with the chosen mode
-	VIDEO_Configure(rmode);
+        GRRLIB_Render();  // Render the frame buffer to the TV
+    }
 
-	// Tell the video hardware where our display memory is
-	VIDEO_SetNextFramebuffer(xfb);
+    GRRLIB_Exit(); // Be a good boy, clear the memory allocated by GRRLIB
 
-	// Clear the framebuffer
-	VIDEO_ClearFrameBuffer(rmode, xfb, COLOR_BLACK);
-
-	// Make the display visible
-	VIDEO_SetBlack(false);
-
-	// Flush the video register changes to the hardware
-	VIDEO_Flush();
-
-	// Wait for Video setup to complete
-	VIDEO_WaitVSync();
-	if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
-
-
-	// The console understands VT terminal escape codes
-	// This positions the cursor on row 2, column 0
-	// we can use variables for this with format codes too
-	// e.g. printf ("\x1b[%d;%dH", row, column );
-	printf("\x1b[2;0H");
-
-
-	printf("Hello World!");
-
-	while(1) {
-
-		// Call WPAD_ScanPads each loop, this reads the latest controller states
-		WPAD_ScanPads();
-
-		// WPAD_ButtonsDown tells us which buttons were pressed in this loop
-		// this is a "one shot" state which will not fire again until the button has been released
-		u32 pressed = WPAD_ButtonsDown(0);
-
-		// We return to the launcher application via exit
-		if ( pressed & WPAD_BUTTON_HOME ) exit(0);
-
-		// Wait for the next frame
-		VIDEO_WaitVSync();
-	}
-
-	return 0;
+    exit(0);  // Use exit() to exit a program, do not use 'return' from main()
 }
