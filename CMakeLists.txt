@@ -21,7 +21,8 @@ endif()
 # CMake Includes
 #---------------------------------------------------------------------------------
 if(FIN_PLATFORM STREQUAL "wii")
-  set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+  # Ensure romfs uses ustar format: romfs-ogc.cmake builds '-H u$ENV{TAR}'
+  set(ENV{TAR} "star")
   include("$ENV{DEVKITPRO}/portlibs/wii/share/romfs-ogc.cmake" REQUIRED)
 endif()
 
@@ -29,44 +30,9 @@ endif()
 # Build Configuration
 #---------------------------------------------------------------------------------
 # Source files
-add_executable(funkin-wii
-  test.c
-)
+add_subdirectory(engine)
+add_subdirectory(funkin)
 
-# Assets
 if(FIN_PLATFORM STREQUAL "wii")
-  romfs_add(funkin-wii "assets")
-endif()
-
-# Libraries
-if(FIN_PLATFORM STREQUAL "wii")
-  target_include_directories(funkin-wii PRIVATE
-    "$ENV{DEVKITPRO}/libogc/include"
-    "$ENV{DEVKITPRO}/portlibs/ppc/include"
-    "$ENV{DEVKITPRO}/portlibs/wii/include"
-  )
-  target_link_directories(funkin-wii PRIVATE
-    "$ENV{DEVKITPRO}/libogc/lib/wii"
-    "$ENV{DEVKITPRO}/portlibs/ppc/lib"
-    "$ENV{DEVKITPRO}/portlibs/wii/lib"
-  )
-  target_link_libraries(funkin-wii
-    grrlib
-    pngu
-    freetype
-    png
-    z
-    bz2
-    jpeg
-    fat
-    wiiuse
-    bte
-    ogc
-    m
-  )
-endif()
-
-# Output
-if(FIN_PLATFORM STREQUAL "wii")
-  ogc_create_dol(funkin-wii)
+  add_definitions(-DFINENGINE_OS_WII)
 endif()

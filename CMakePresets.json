@@ -8,7 +8,8 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "environment": {
-                "PATH": "/opt/homebrew/opt/gnu-tar/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$penv{PATH}"
+                "PATH": "/opt/homebrew/opt/gnu-tar/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$penv{PATH}",
+                "TAR": "star"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
@@ -25,7 +26,8 @@
             "configurePreset": "wii",
             "displayName": "Default Build",
             "environment": {
-                "PATH": "/opt/homebrew/opt/gnu-tar/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$penv{PATH}"
+                "PATH": "/opt/homebrew/opt/gnu-tar/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$penv{PATH}",
+                "TAR": "star"
             }
         }
     ]
