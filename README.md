@@ -5,6 +5,9 @@
 <h1> Welcome! </h1>
 <p>This is a rewrite of <a href="https://github.com/FunkinCrew/Funkin">Friday Night Funkin'</a> made to run on the Nintendo Wii!</p>
 
+<h1> This project is on hold! </h1>
+<p>Focus is being put towards the underlying engine <a href="https://github.com/NicktasticDEV/FinEngine">(FinEngine)</p></a>
+
 <h1>How to compile</h1>
 
 <h3><p>The Docker way (Recommended)</p></h3>
